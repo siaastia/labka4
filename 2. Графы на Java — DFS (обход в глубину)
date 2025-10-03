@@ -1,0 +1,45 @@
+import java.util.*;   // импортируем коллекции
+
+class Graph {
+    private int V;                      // количество вершин
+    private LinkedList<Integer>[] adj;  // список смежности
+
+    Graph(int v) {                      // конструктор
+        V = v;
+        adj = new LinkedList[v];        // массив списков
+        for (int i = 0; i < v; i++)
+            adj[i] = new LinkedList<>(); // инициализация списка
+    }
+
+    void addEdge(int u, int v) {   // добавление ребра
+        adj[u].add(v);             // u → v
+        adj[v].add(u);             // v → u
+    }
+
+    void DFSUtil(int v, boolean[] visited) {  // вспомогательная рекурсивная функция
+        visited[v] = true;                    // помечаем вершину
+        System.out.print(v + " ");            // выводим
+        for (int neigh : adj[v]) {            // перебираем соседей
+            if (!visited[neigh])              // если сосед не посещён
+                DFSUtil(neigh, visited);      // рекурсивно вызываем DFS
+        }
+    }
+
+    void DFS(int start) {                // основной метод DFS
+        boolean[] visited = new boolean[V]; // массив посещённых вершин
+        DFSUtil(start, visited);            // вызов рекурсии
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Graph g = new Graph(5);   // создаём граф
+        g.addEdge(0,1);           // добавляем ребро 0–1
+        g.addEdge(0,2);           // добавляем ребро 0–2
+        g.addEdge(1,3);           // добавляем ребро 1–3
+        g.addEdge(2,4);           // добавляем ребро 2–4
+
+        System.out.print("DFS начиная с вершины 0: "); // вывод
+        g.DFS(0);  // запускаем DFS
+    }
+}
